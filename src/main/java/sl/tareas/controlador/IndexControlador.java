@@ -35,7 +35,16 @@ public class IndexControlador implements Initializable {
     @FXML
     private TableColumn<Tarea, String> estatusColumna;
 
+    private Integer idTareaInterno;
+
     private final ObservableList<Tarea> tareaList = FXCollections.observableArrayList();
+
+    @FXML
+    private TextField nombreTareaTexto;
+    @FXML
+    private TextField  responsableTexto;
+    @FXML
+    private TextField estatusTexto;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -57,6 +66,78 @@ public class IndexControlador implements Initializable {
         logger.info("datos= "+ tareaList.size());
         tareaTabla.setItems(tareaList);
     }
+//Boton para agregar la tarea
+    public void agregarTarea(){
+        if (nombreTareaTexto.getText().isEmpty()){
+            mostrarMensaje("Error de validacion", "Debe proporcionar una tarea");
+            nombreTareaTexto.requestFocus();
+            return;
+        }
+        else {
+            Tarea tarea = new Tarea();
+            recolectarDatosFormulario(tarea);
+            tarea.setId(null);
+            tareaServicio.guardarTarea(tarea);
+            mostrarMensaje("Novedad","Tarea guardada");
+            limpiarFormulario();
+            mostraTareas();
+        }
+    }
+    public void modificarTarea(){
+
+        if (idTareaInterno == null){
+            mostrarMensaje("Advertencia", "Debe seleccionar una tarea para modificar");
+            return;
+        }
+        if(nombreTareaTexto.getText().isEmpty()) {
+            mostrarMensaje("Error de validacion", "Debe proporcionar una tarea");
+            nombreTareaTexto.requestFocus();
+            return;
+        }
+        var tarea = new Tarea();
+        recolectarDatosFormulario(tarea);
+        tareaServicio.guardarTarea(tarea);
+        mostrarMensaje("Informacion", "Se ha actualizado el cliente correctamente");
+        limpiarFormulario();
+        mostraTareas();
+    }
+
+    public void cargarTareaFormulario(){
+        var tarea = tareaTabla.getSelectionModel().getSelectedItem();
+        if (tarea!= null){
+            idTareaInterno = tarea.getId();
+            nombreTareaTexto.setText(tarea.getNombreTarea());
+            responsableTexto.setText(tarea.getResponsable());
+            estatusTexto.setText(tarea.getEstatus());
+        }
+    }
+
+    private void limpiarFormulario(){
+        idTareaInterno = null;
+        nombreTareaTexto.clear();
+        responsableTexto.clear();
+        estatusTexto.clear();
+    }
+
+    private void recolectarDatosFormulario(Tarea tarea){
+        if (idTareaInterno != null){
+            tarea.setId(idTareaInterno);
+        }
+        tarea.setNombreTarea(nombreTareaTexto.getText());
+        tarea.setResponsable(responsableTexto.getText());
+        tarea.setEstatus(estatusTexto.getText());
+
+    }
+
+//Forma de mostrar alertas o mensajes en javaFX
+    private void mostrarMensaje(String titulo, String mensaje){
+        Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
+        alerta.setTitle(titulo);
+        alerta.setHeaderText(null);
+        alerta.setContentText(mensaje);
+        alerta.showAndWait();
+    }
+
 
 
 }
