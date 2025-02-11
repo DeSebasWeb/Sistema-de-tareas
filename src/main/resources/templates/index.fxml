@@ -51,7 +51,7 @@
                   <Font size="15.0" />
                </font>
             </Button>
-            <Button fx:id="botonEliminar" layoutX="440.0" layoutY="37.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="74.0" style="-fx-background-color: #7F8BD3;" text="Eliminar" textFill="WHITE">
+            <Button fx:id="botonEliminar" layoutX="440.0" layoutY="37.0" mnemonicParsing="false" onAction="#eliminarTarea" prefHeight="28.0" prefWidth="74.0" style="-fx-background-color: #7F8BD3;" text="Eliminar" textFill="WHITE">
                <font>
                   <Font size="15.0" />
                </font>
@@ -61,7 +61,7 @@
                   <Font size="15.0" />
                </font>
             </Button>
-            <Button fx:id="botonLimpiar" layoutX="534.0" layoutY="37.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="74.0" style="-fx-background-color: #7FB6D3;" text="Limpiar" textFill="WHITE">
+            <Button fx:id="botonLimpiar" layoutX="534.0" layoutY="37.0" mnemonicParsing="false" onAction="#limpiarFormulario" prefHeight="28.0" prefWidth="74.0" style="-fx-background-color: #7FB6D3;" text="Limpiar" textFill="WHITE">
                <font>
                   <Font size="15.0" />
                </font>

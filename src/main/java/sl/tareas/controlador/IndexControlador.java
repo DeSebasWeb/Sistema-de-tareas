@@ -68,6 +68,12 @@ public class IndexControlador implements Initializable {
     }
 //Boton para agregar la tarea
     public void agregarTarea(){
+        if(idTareaInterno != null){
+            mostrarMensaje("Error", "Esta intentando crear una tarea ya existente, vuelva a intentarlo");
+            limpiarFormulario();
+            nombreTareaTexto.requestFocus();
+            return;
+        }
         if (nombreTareaTexto.getText().isEmpty()){
             mostrarMensaje("Error de validacion", "Debe proporcionar una tarea");
             nombreTareaTexto.requestFocus();
@@ -84,7 +90,6 @@ public class IndexControlador implements Initializable {
         }
     }
     public void modificarTarea(){
-
         if (idTareaInterno == null){
             mostrarMensaje("Advertencia", "Debe seleccionar una tarea para modificar");
             return;
@@ -112,7 +117,7 @@ public class IndexControlador implements Initializable {
         }
     }
 
-    private void limpiarFormulario(){
+    public void limpiarFormulario(){
         idTareaInterno = null;
         nombreTareaTexto.clear();
         responsableTexto.clear();
@@ -126,6 +131,20 @@ public class IndexControlador implements Initializable {
         tarea.setNombreTarea(nombreTareaTexto.getText());
         tarea.setResponsable(responsableTexto.getText());
         tarea.setEstatus(estatusTexto.getText());
+
+    }
+
+    public void eliminarTarea(){
+        Tarea tarea = tareaTabla.getSelectionModel().getSelectedItem();
+        if (tarea != null){
+            logger.info("Tarea a eliminar: "+ tarea);
+            tareaServicio.eliminarTarea(tarea);
+            limpiarFormulario();
+            mostraTareas();
+            mostrarMensaje("Informacion", "La tarea se ha eliminado correctamente.");
+        }else {
+            mostrarMensaje("Precaucion", "Para eliminar una tarea primero debe de seleccionar una");
+        }
 
     }
 
